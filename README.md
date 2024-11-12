@@ -4,6 +4,26 @@ Pure python dicom server.
 # Getting started
 pip install diggy
 
+Diggy comes with ready to use binary:
+
+```commandline
+diggy --port 4242 --aet DIGGY 
+```
+
+Or start diggy from python
+
+```commandline
+python -m diggy --port 4242 --aet DIGGY
+```
+
+Or use diggy as a DICOM in your code
+
+```python
+from diggy import Diggy
+diggy = Diggy()
+diggy.start(port=4242, aet='DIGGY')
+```
+
 # development
 
 ```commandline
