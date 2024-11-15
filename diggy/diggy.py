@@ -1,6 +1,12 @@
 import logging
 import pydicom
-from pynetdicom import AE, evt, _config, ALL_TRANSFER_SYNTAXES, AllStoragePresentationContexts
+from pynetdicom import (
+    AE,
+    evt,
+    _config,
+    ALL_TRANSFER_SYNTAXES,
+    AllStoragePresentationContexts,
+)
 from pynetdicom.sop_class import Verification
 from pynetdicom.events import Event
 
@@ -20,10 +26,7 @@ class Diggy:
         self.ae = AE(ae_title=ae_title)
         self.ae.add_supported_context(Verification, ALL_TRANSFER_SYNTAXES)
         for cx in AllStoragePresentationContexts:
-            self.ae.add_supported_context(
-                cx.abstract_syntax,
-                ALL_TRANSFER_SYNTAXES
-            )
+            self.ae.add_supported_context(cx.abstract_syntax, ALL_TRANSFER_SYNTAXES)
         self.storage_folder = storage_folder
 
         self.logger = logging.getLogger("diggy")
@@ -53,8 +56,6 @@ class Diggy:
 
         return 0x0000
 
-
-
     def send_c_echo(self, aet: str, address: str, port: int):
         ae = AE(ae_title=aet)
         ae.add_requested_context(Verification)
@@ -77,11 +78,13 @@ class Diggy:
         else:
             self.logger.info("Association rejected, aborted or never connected")
 
-    def send_c_store(self, aet: str, address: str, port: int, instances: list[pydicom.Dataset]):
+    def send_c_store(
+        self, aet: str, address: str, port: int, instances: list[pydicom.Dataset]
+    ):
 
         ae = AE(ae_title=aet)
 
-        sop_classes = {str(ds.SOPClassUID) for ds in instances if 'SOPClassUID' in ds}
+        sop_classes = {str(ds.SOPClassUID) for ds in instances if "SOPClassUID" in ds}
         for sop_class_uid in sop_classes:
             ae.add_requested_context(sop_class_uid)
 
